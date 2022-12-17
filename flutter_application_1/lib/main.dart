@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-void main () => runApp(const MyApp());
+import 'flutter_buoi_10.dart';
+
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -11,115 +14,136 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Bài tập buổi 9'),
+          title: const Text('Bài tập buổi 10'),
         ),
         body: _buildHomePage(),
       ),
     );
   }
-  
+
+  String get _txtSignUp => 'SING UP';
+
+  Widget _buildLabel(String text, double fSize) {
+    return Text(text, style: TextStyle(fontWeight: FontWeight.w500, fontSize: fSize));
+  }
+
   Widget _buildHomePage() {
     return Container(
-      padding: const EdgeInsets.all(10.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildParagraph(),
-          _buildLine(),
-          _buildStack(),
-        ],
-      ),
-    );
-  }
-  
-  Widget _buildParagraph() {
-    return Column(
-      children: [
-        //row1
-        Center(
-          child: _buildTitle('Hàng thứ nhất'),
-        ),
-        const SizedBox(height: 10),
-
-        //row 2
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+        padding: const EdgeInsets.all(40),
+        child: Column(
+          //crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Expanded(child: _buildTitle('Hàng thứ hai 1')),
-            Expanded(child: _buildTitle('Hàng thứ hai 2'))
+            _buildTitle(),
+            _buildInput('Email', 'Enter your email'),
+            _buildSpacer(),
+            _buildInput('Password', 'Enter your password'),
+            _buildSpacer(),
+            _buildBtnSignUp(),
+            _buildSpacer(),
+            _buildLine(),
+            _buildSpacer(),
+            _buildSocialButtons(),
+            _buildBottomText(),
           ],
-        ),
-        const SizedBox(height: 10),
+        ));
+  }
 
-        //row 3
-        const Center(
-          child: Text.rich(
-            TextSpan(
-              children: [
-                TextSpan(
-                  text: 'Hàng thứ 3',
-                  style: TextStyle(color: Colors.grey),
-                ),
-                TextSpan(
-                  text: ' bold 1',
-                  style: TextStyle(color: Colors.yellow, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
+  Widget _buildSpacer() {
+    return const SizedBox(height: 20);
+  }
+
+  Widget _buildTitle() {
+    return Container(
+      alignment: Alignment.centerLeft,
+      margin: const EdgeInsets.only(bottom: 30),
+      child: _buildLabel(_txtSignUp, 30),
+    );
+  }
+
+  Widget _buildInput(String text, String placeholder) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildLabel(text, 18),
+        TextField(
+          decoration: InputDecoration(
+            hintText: placeholder,
+            border: const OutlineInputBorder(),
+            contentPadding: const EdgeInsets.only(top: 0, bottom: 0, left: 10, right: 10),
           ),
-        ),
-        
+        )
       ],
     );
   }
 
-  Widget _buildTitle(String str) {
-    return Text(
-      str,
-      style: const TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.w700,
-        color: Colors.grey,
+  Color get activeColor => const Color.fromARGB(159, 220, 15, 107);
+
+  Widget _buildBtnSignUp() {
+    return Container(
+      width: double.infinity,
+      height: 50,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: activeColor,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Text(
+        _txtSignUp,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 17,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
-  
-  Widget _buildStack() {
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        Container(
-          width: 100,
-          height: 100,
-          color: Colors.green,
-        ),
-        Positioned(
-          top: 50,
-          left: 50,
-          child: Container(
-            width: 100,
-            height: 100,
-            color: Colors.red,
-          ),
-        ),
-        Positioned(
-          top: 100,
-          left: 100,
-          child: Container(
-            width: 100,
-            height: 100,
-            color: Colors.yellow,
-          ),
-        ),
-      ],
+
+  Widget _buildBottomText() {
+    return RichText(
+      text: const TextSpan(text: 'Already a user? ', style: TextStyle(fontSize: 18, color: Colors.black), children: [
+        TextSpan(text: 'LOGIN', style: TextStyle(decoration: TextDecoration.underline))
+      ]),
     );
   }
-  
+
+  Widget _buildSocialButtons() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: Row(mainAxisSize: MainAxisSize.min, children: [
+        _buildBtnCircle('G', const Color.fromARGB(255, 200, 49, 38), 10),
+        _buildBtnCircle('f', const Color.fromARGB(255, 89, 107, 171), 10),
+        _buildBtnCircle('in', const Color.fromARGB(255, 58, 100, 184)),
+      ]),
+    );
+  }
+
+  Widget _buildBtnCircle(String text, Color color, [double mr = 0]) {
+    return Container(
+      width: 40,
+      height: 40,
+      margin: EdgeInsets.only(right: mr),
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(width: 3, color: color),
+      ),
+      child: Text(text, style: TextStyle(color: color, fontSize: 18, fontWeight: FontWeight.bold)),
+    );
+  }
+
   Widget _buildLine() {
-    return const Divider(
-      height: 5,
-      thickness: 1,
-      color: Colors.grey,
+    return Stack(
+      clipBehavior: Clip.antiAlias,
+      alignment: Alignment.center,
+      children: [
+        const Divider(height: 60, color: Colors.grey),
+        Positioned(
+          top: 15,
+          child: Container(padding: const EdgeInsets.all(5), decoration: BoxDecoration(color: Colors.white, border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(5)), child: const Text('OR')),
+        ),
+      ],
     );
   }
 }
